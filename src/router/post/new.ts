@@ -1,11 +1,11 @@
 import { Router  , Request,
          Response, NextFunction } from "express"
-import Post from "../models/post"
+import Post from "../../models/post"
 
 const router = Router()
 
-// router.post("/api/post/new",async (req :Request ,
-router.post("/",async (req :Request ,
+router.post("/api/post/new",async (req :Request ,
+// router.post("/",async (req :Request ,
      res :Response,
      next : NextFunction
     )=>{
@@ -27,5 +27,5 @@ router.post("/",async (req :Request ,
 
 })
 
-// export {router as newPostRouter}
-module.exports = router 
+export {router as newPostRouter}
+// module.exports = router 

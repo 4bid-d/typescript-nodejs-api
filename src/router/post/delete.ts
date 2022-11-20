@@ -1,9 +1,9 @@
 import { Router, Response, Request, NextFunction} from  "express"
-import Post from "../models/post";
+import Post from "../../models/post";
 
 const router = Router()
-// router.delete("/api/post/delete/:id",async (req :Request ,
-router.delete("/:id",async (req :Request ,
+router.delete("/api/post/delete/:id",async (req :Request ,
+// router.delete("/:id",async (req :Request ,
     res :Response,
     next : NextFunction
    )=>{
@@ -23,5 +23,5 @@ router.delete("/:id",async (req :Request ,
     res.status(200).json({success:true})
 })
 
-// export {router as deletePostRouter}
-module.exports = router 
+export {router as deletePostRouter}
+// module.exports = router 

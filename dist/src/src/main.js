@@ -21,6 +21,7 @@ require('dotenv').config();
 // dotenv.config()
 const app = (0, express_1.default)();
 const router_1 = require("./router");
+const cookie_session_1 = __importDefault(require("cookie-session"));
 const myLogger = function (req, res, next) {
     console.log("Request IP: " + req.ip);
     console.log("Request Method: " + req.method);
@@ -32,10 +33,15 @@ app.use((0, cors_1.default)({
     origin: "*",
     optionsSuccessStatus: 200
 }));
+app.set("trust proxy", true);
 app.use((0, body_parser_1.urlencoded)({
-    extended: true
+    extended: false
 }));
 app.use((0, body_parser_1.json)());
+app.use((0, cookie_session_1.default)({
+    signed: false,
+    secure: false
+}));
 app.use(router_1.newPostRouter);
 app.use(router_1.deletePostRouter);
 app.use(router_1.showPostRouter);
@@ -58,6 +64,8 @@ app.use((error, req, res, next) => {
 const start = () => __awaiter(void 0, void 0, void 0, function* () {
     if (process.env.MONGO_URI === undefined)
         throw new Error("MONGO_URI doesnt exists.");
+    if (process.env.JWT_TOKEN === undefined)
+        throw new Error("JWT_TOKEN doesnt exists.");
     try {
         yield mongoose_1.default.connect(process.env.MONGO_URI, () => {
             console.log("connected");

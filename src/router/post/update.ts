@@ -1,5 +1,5 @@
 import { Router  , Request, Response, NextFunction } from "express"
-import Post from "../models/post"
+import Post from "../../models/post"
 
 const router  = Router()
 
@@ -35,5 +35,5 @@ router.post("/:id", async (
 })
 
 
-module.exports = router 
-// export { router as updateRouter }
+// module.exports = router 
+export { router as updatePostRouter }
