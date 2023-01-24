@@ -17,20 +17,25 @@ const express_1 = require("express");
 const post_1 = __importDefault(require("../../models/post"));
 const router = (0, express_1.Router)();
 exports.newPostRouter = router;
-router.post("/api/post/new", (req, 
-// router.post("/",async (req :Request ,
-res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { title, content } = req.body;
-    if (!title || !content) {
-        const error = new Error("title and content are required");
-        error.status = 400;
+router.post("/api/post/new", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const { title, content } = req.body;
+        console.log(title);
+        if (!title || !content) {
+            const error = new Error("title and content are required");
+            error.status = 400;
+            // throw error
+            return;
+        }
+        const newPost = new post_1.default({
+            title: title !== null && title !== void 0 ? title : "none",
+            content
+        });
+        yield newPost.save();
+        res.status(201).send(newPost);
+    }
+    catch (error) {
         next(error);
     }
-    const newPost = new post_1.default({
-        title,
-        content
-    });
-    yield newPost.save();
-    res.status(201).send(newPost);
 }));
 // module.exports = router 

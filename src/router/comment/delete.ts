@@ -17,9 +17,7 @@ router.delete("/api/comment/:commentId/delete/:postId",async (req :Request ,
     }
 
     try {
-        await Comment.findOneAndRemove(
-            {_id:commentId}
-            )
+        await Comment.findOneAndRemove({_id:commentId})
     } catch (error) {
         next(new Error("Comment cannot be updated"))
     }

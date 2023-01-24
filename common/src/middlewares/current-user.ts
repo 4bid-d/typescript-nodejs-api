@@ -17,14 +17,13 @@ export const currentUser = ( req : Request , res :Response , next: NextFunction)
     if(!req.session?.jwt){
         return next()
     }
-
     try {
-        const payLoad = jwt.verify(req.session?.jwt, process.env.JWT_KEY!) as JwtPayload
+        const payLoad = jwt.verify(req.session?.jwt, process.env.JWT_TOKEN!) as JwtPayload
         req.currentUser = payLoad;
+        next()
 
     } catch (error) {
         return next(error)
     }
 
-    next()
 } 

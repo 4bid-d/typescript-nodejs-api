@@ -8,6 +8,10 @@ require('dotenv').config()
 const app = express()
 
 import {
+    //auth 
+    currentUserRouter,
+    signInRouter,
+    signupRouter,
     //comment
     deleteCommentRouter,
     newCommentRouter,
@@ -16,8 +20,9 @@ import {
     deletePostRouter,
     showPostRouter,
     newPostRouter    
-} from "./router"
+} from "./router/index"
 import cookieSession from "cookie-session"
+import { requireAuth } from "../common"
 
 const myLogger = function( req:Request, res:Response, next:NextFunction) {
     console.log("Request IP: " + req.ip);
@@ -45,12 +50,15 @@ app.use(cookieSession({
     signed:false,
     secure:false
 }))
-app.use(newPostRouter)
-app.use(deletePostRouter)
+app.use(signInRouter)
+app.use(signupRouter)
+app.use(currentUserRouter)
+app.use(requireAuth,newPostRouter)
+app.use(requireAuth,deletePostRouter)
 app.use(showPostRouter)
-app.use(updatePostRouter)
-app.use(newCommentRouter)
-app.use(deleteCommentRouter)
+app.use(requireAuth,updatePostRouter)
+app.use(requireAuth,newCommentRouter)
+app.use(requireAuth,deleteCommentRouter)
 
 app.all("*",(req,res,next)=>{    
     const err = new Error("not found") as CustomError
@@ -65,12 +73,13 @@ declare global {
 }
 
 app.use((error:CustomError, req:Request, res:Response, next:NextFunction)=>{
-    if(error.status){
-        return res.status(error.status).json({message:error.message})
+    if(error){
+        res.status(error.status ?? 400).json({message:error.message})
+        return
     }
     res
-    .status(500)
-    .json({message:error.message})
+    .sendStatus(500)
+    // .json({message:error.message})
 })
 
 const start = async ()=>{

@@ -8,21 +8,28 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.signupRouter = void 0;
 const express_1 = require("express");
 const user_1 = require("../../models/user");
+const jsonwebtoken_1 = __importDefault(require("jsonwebtoken"));
 const router = (0, express_1.Router)();
 exports.signupRouter = router;
 router.post("/signup", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const { email, password } = req.body;
     const user = yield user_1.User.findOne({ email });
     if (user)
-        return new Error("User already exists.");
+        next(new Error("User already exists."));
     const newUser = new user_1.User({
         email,
         password
     });
     yield newUser.save();
+    req.session = {
+        jwt: jsonwebtoken_1.default.sign({ email, userId: newUser._id }, process.env.JWT_TOKEN)
+    };
     res.status(201).send(newUser);
 }));

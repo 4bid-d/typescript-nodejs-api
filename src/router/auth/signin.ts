@@ -5,9 +5,9 @@ import jwt from "jsonwebtoken"
 const router = Router()
 
 
-router.post("signin",async(req : Request , res :Response , next: NextFunction )=>{
+router.post("/signin",async(req : Request , res :Response , next: NextFunction )=>{
     const {email , password } = req.body
-
+    console.log("hi from signin ")
     const user = await  User.findOne({email})
     if(!user) next(new Error("Wrong credential."))
 
@@ -15,8 +15,11 @@ router.post("signin",async(req : Request , res :Response , next: NextFunction )=
 
     if(!isEqual) return next(new Error("wrong Credentials"))
 
-    const token = jwt.sign({email , userId:user!._id }, process.env.JWT_KEY! )
+    const token = jwt.sign({email , userId:user!._id }, process.env.JWT_TOKEN! )
     req.session = {jwt : token }
 
     res.status(200).send(user)
 }) 
+
+
+export { router as signInRouter }

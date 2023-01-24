@@ -20,7 +20,7 @@ router.post("/signup",async( req : Request , res :Response , next: NextFunction 
     await newUser.save()
 
     req.session = {
-        jwt : jwt.sign({email, userId : newUser._id }, process.env.JWT_KEY!)
+        jwt : jwt.sign({email, userId : newUser._id }, process.env.JWT_TOKEN!)
     }
 
     res.status(201).send(newUser)
@@ -28,4 +28,4 @@ router.post("/signup",async( req : Request , res :Response , next: NextFunction 
 
 
 
-export {router as signupRouter }
+export {router as signupRouter}

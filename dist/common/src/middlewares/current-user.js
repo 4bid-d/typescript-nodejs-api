@@ -11,12 +11,12 @@ const currentUser = (req, res, next) => {
         return next();
     }
     try {
-        const payLoad = jsonwebtoken_1.default.verify((_b = req.session) === null || _b === void 0 ? void 0 : _b.jwt, process.env.JWT_KEY);
+        const payLoad = jsonwebtoken_1.default.verify((_b = req.session) === null || _b === void 0 ? void 0 : _b.jwt, process.env.JWT_TOKEN);
         req.currentUser = payLoad;
+        next();
     }
     catch (error) {
         return next(error);
     }
-    next();
 };
 exports.currentUser = currentUser;

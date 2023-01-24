@@ -3,12 +3,11 @@ import Post from "../../models/post";
 
 const router = Router()
 
-router.get("/api/post/show/:id",async (req :Request ,
-// router.get("/:id",async (req :Request ,
+router.post("/api/post/show",async (req :Request ,
     res :Response,
     next : NextFunction
    )=>{
-    const {id }  = req.params ;
+    const {id }  = req.body ;
     if(!id){
        const allPosts = await Post.find()
        return res.status(200).send(allPosts)

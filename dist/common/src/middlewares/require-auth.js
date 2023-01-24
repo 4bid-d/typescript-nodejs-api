@@ -8,22 +8,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
-const express_1 = require("express");
-const post_1 = __importDefault(require("../models/post"));
-const router = (0, express_1.Router)();
-// router.get("/api/post/show/:id",async (req :Request ,
-router.get("/:id", (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const { id } = req.params;
-    if (!id) {
-        const allPosts = yield post_1.default.find();
-        return res.status(200).send(allPosts);
-    }
-    const post = yield post_1.default.findOne({ _id: id });
-    res.status(200).json(post);
-}));
-// export {router as showPostRouter}
-module.exports = router;
+exports.requireAuth = void 0;
+const requireAuth = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.currentUser)
+        return next(new Error("not authorized"));
+    next();
+});
+exports.requireAuth = requireAuth;

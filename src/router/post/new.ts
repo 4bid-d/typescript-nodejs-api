@@ -4,26 +4,29 @@ import Post from "../../models/post"
 
 const router = Router()
 
-router.post("/api/post/new",async (req :Request ,
-// router.post("/",async (req :Request ,
-     res :Response,
-     next : NextFunction
-    )=>{
-    const  {title , content } =  req.body 
-
-    if(!title || !content){
-        const error = new Error("title and content are required") as CustomError
-        error.status = 400
+router.post("/api/post/new",async (req :Request ,res :Response,next : NextFunction)=>{
+    
+    try {
+        
+        const  {title , content } =  req.body 
+        console.log(title)
+        if(!title || !content){
+            const error = new Error("title and content are required") as CustomError
+            error.status = 400
+            // throw error
+            return
+        }
+    
+        const newPost = new Post({
+            title:title ?? "none",
+            content
+        })
+        await newPost.save()
+    
+        res.status(201).send(newPost)
+    } catch (error) {
         next(error)
     }
-
-    const newPost = new Post({
-        title,
-        content
-    })
-    await newPost.save()
-
-    res.status(201).send(newPost)
 
 })
 

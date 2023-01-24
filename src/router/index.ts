@@ -1,3 +1,7 @@
+//auth 
+export * from "./auth/signin"
+export * from "./auth/signup"
+export * from "./auth/current-user"
 //comment 
 export * from "./comment/delete"
 export * from "./comment/new"
